@@ -26,13 +26,13 @@ export const addMinutes = modifyMinutes(n => n + 1);
 
 export const subtractMinutes = modifyMinutes(n => n - 1);
 
-function modifyMinutes(modification: (n: number) => number): (time: TimeOfDay, minutes: number) => TimeOfDay {
+function modifyMinutes(modifier: (n: number) => number): (time: TimeOfDay, minutes: number) => TimeOfDay {
   return function(time, minutes) {
     const copy = {...time};
     for (let i = 0; i < minutes; i++) {
-      copy.minute = modification(copy.minute);
+      copy.minute = modifier(copy.minute);
       if (copy.minute < 0 || copy.minute >= 60) {
-        copy.hour = modification(copy.hour);
+        copy.hour = modifier(copy.hour);
         copy.minute = modulo(copy.minute, 60);
       }
       copy.hour = modulo(copy.hour, 24);
