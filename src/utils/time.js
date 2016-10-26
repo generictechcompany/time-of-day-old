@@ -22,12 +22,26 @@ export function fromString(date: string): TimeOfDay {
   };
 }
 
-export function addMinutes(time: TimeOfDay, minutes: number): TimeOfDay {
+export function moveMinutes(time: TimeOfDay, minutes: number, action: "add" | "subtract") {
   const copy = {...time};
+
+  const actions = {
+    add: {
+      checkEdgeCase: (tod: TimeOfDay) => tod.minute >= 60,
+      changeMinute: (tod: TimeOfDay) => tod.minute++,
+      changeHour: (tod: TimeOfDay) => tod.hour++,
+    },
+    subtract: {
+      checkEdgeCase: (tod: TimeOfDay) => tod.minute < 0,
+      changeMinute: (tod: TimeOfDay) => tod.minute--,
+      changeHour: (tod: TimeOfDay) => tod.hour--,
+    },
+  };
+
   for (let i = 0; i < minutes; i++) {
-    copy.minute++;
-    if (copy.minute >= 60) {
-      copy.hour++;
+    actions[action].changeMinute(copy);
+    if (actions[action].checkEdgeCase(copy)) {
+      actions[action].changeHour(copy);
       copy.minute = modulo(copy.minute, 60);
     }
     copy.hour = modulo(copy.hour, 24);
@@ -35,17 +49,12 @@ export function addMinutes(time: TimeOfDay, minutes: number): TimeOfDay {
   return copy;
 }
 
+export function addMinutes(time: TimeOfDay, minutes: number): TimeOfDay {
+  return moveMinutes(time, minutes, "add");
+}
+
 export function subtractMinutes(time: TimeOfDay, minutes: number): TimeOfDay {
-  const copy = Object.assign({}, time);
-  for (let i = 0; i < minutes; i++) {
-    copy.minute--;
-    if (copy.minute < 0) {
-      copy.hour--;
-      copy.minute = modulo(copy.minute, 60);
-    }
-    copy.hour = modulo(copy.hour, 24);
-  }
-  return copy;
+  return moveMinutes(time, minutes, "subtract");
 }
 
 const parseDecimal = (val: number) => parseInt(val, 10);
