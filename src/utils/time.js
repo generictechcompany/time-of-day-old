@@ -27,12 +27,12 @@ export function moveMinutes(time: TimeOfDay, minutes: number, action: "add" | "s
 
   const actions = {
     add: {
-      checkEdgeCase: (tod: TimeOfDay) => tod.minute >= 60,
+      checkForOverflow: (tod: TimeOfDay) => tod.minute >= 60,
       changeMinute: (tod: TimeOfDay) => tod.minute++,
       changeHour: (tod: TimeOfDay) => tod.hour++,
     },
     subtract: {
-      checkEdgeCase: (tod: TimeOfDay) => tod.minute < 0,
+      checkForOverflow: (tod: TimeOfDay) => tod.minute < 0,
       changeMinute: (tod: TimeOfDay) => tod.minute--,
       changeHour: (tod: TimeOfDay) => tod.hour--,
     },
@@ -40,7 +40,7 @@ export function moveMinutes(time: TimeOfDay, minutes: number, action: "add" | "s
 
   for (let i = 0; i < minutes; i++) {
     actions[action].changeMinute(copy);
-    if (actions[action].checkEdgeCase(copy)) {
+    if (actions[action].checkForOverflow(copy)) {
       actions[action].changeHour(copy);
       copy.minute = modulo(copy.minute, 60);
     }
