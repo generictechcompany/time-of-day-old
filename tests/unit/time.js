@@ -1,6 +1,6 @@
 // @flow
 
-import {addMinutes, fromString} from "../../src/utils/time";
+import {addMinutes, fromString, subtractMinutes} from "../../src/utils/time";
 
 import test from "ava";
 
@@ -39,6 +39,16 @@ test("Can add minutes with day rollover", async t => {
   const expected = {
     hour: 2,
     minute: 30,
+  };
+
+  t.deepEqual(date, expected);
+});
+
+test("Can subtract minutes", async t => {
+  const date = subtractMinutes(fromString("00:40"), 30);
+  const expected = {
+    hour: 0,
+    minute: 10,
   };
 
   t.deepEqual(date, expected);
