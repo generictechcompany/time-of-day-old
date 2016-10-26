@@ -1,0 +1,8 @@
+[ignore]
+.*/node_modules/fbjs/.*
+.*/node_modules/npm/.*
+.*/node_modules/radium/.*
+.*/react/node_modules/.*
+.*/secure-repositories/.*
+[options]
+esproposal.export_star_as=enable

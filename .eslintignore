@@ -1,0 +1,4 @@
+**/fixtures/**/*.js
+deck/presentation/slides/archived/*.js
+deck/presentation/slides/components/*.js
+deck/node_modules/
