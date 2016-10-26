@@ -36,16 +36,16 @@ export function addMinutes(time: TimeOfDay, minutes: number): TimeOfDay {
 }
 
 export function subtractMinutes(time: TimeOfDay, minutes: number): TimeOfDay {
-  const copy = Object.assign({}, time)
+  const copy = Object.assign({}, time);
   for (let i = 0; i < minutes; i++) {
-    copy.minute--
+    copy.minute--;
     if (copy.minute < 0) {
-      copy.hour--
-      copy.minute = modulo(copy.minute, 60)
+      copy.hour--;
+      copy.minute = modulo(copy.minute, 60);
     }
-    copy.hour = modulo(copy.hour, 24)
+    copy.hour = modulo(copy.hour, 24);
   }
-  return copy
+  return copy;
 }
 
 const parseDecimal = (val: number) => parseInt(val, 10);
